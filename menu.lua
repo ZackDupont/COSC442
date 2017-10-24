@@ -32,24 +32,25 @@ local function onPlayRelease(event)
 end
 
 -- Stats button handler
-local function onStatRelease(event)
-	print("stats!")
+local function onStoryRelease(event)
+	composer.gotoScene ("story", "fade", 500)
 	return true
 end
 
 -- Credits button handler
 local function onCreditRelease(event)
-	native.showAlert("Papa Monkey's Extravagent Credits", "Amazing Home screen: Me \nAmazing other Screen: You \nDank beats: Sam")
+	native.showAlert("Papa Monkey's Extravagent Credits", 
+		"Developers: Zack Dupont, George Grafton, Sam Hunt \nManagement: Zack Dupont, George Grafton, Sam Hunt \nProject Leader(s): Zack Dupont, George Grafton, Sam Hunt \nThrilling Storyline: Zack Dupont, George Grafton, Sam Hunt \nMusic: Sam Hunt \nSpeech Bubbles: Freepik.com")
 	return true
 end
 
 -- Music Reset Handler
-local function resetBgMusic(event)
-    if event.completed == false and event.phase == "stopped" then
-        audio.setVolume ( 1, {channel=1 })
-        audio.rewind (bgMusic)
-    end
-end
+-- local function resetBgMusic(event)
+--     if event.completed == false and event.phase == "stopped" then
+--         audio.setVolume ( 1, {channel=1 })
+--         audio.rewind (bgMusic)
+--     end
+-- end
 
 -- Music Player Handler
 local function playBgMusic()
@@ -63,12 +64,12 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	-- Background image
-	local bg = display.newImage("images/bg.jpg", true)
-	bg.rotation = 90
-	bg.width = display.contentHeight
-	bg.height = display.contentWidth
-	bg.x = display.contentWidth / 2
-	bg.y = display.contentHeight / 2
+	local bgMain = display.newImage( sceneGroup, "images/bgMain.jpg", true)
+	bgMain.rotation = 90
+	bgMain.width = display.contentHeight
+	bgMain.height = display.contentWidth
+	bgMain.x = display.contentWidth / 2
+	bgMain.y = display.contentHeight / 2
 
 	-- Game Title
 	local titleInfo = {
@@ -99,21 +100,21 @@ function scene:create( event )
 	} 
 	playBtn.rotation = 90
 
-	-- Stats Button
-	statBtn = widget.newButton{
+	-- Story Button
+	storyBtn = widget.newButton{
 		left = 350,
 		top = 1150,
 		width = 600,
 		height = 250,
 		defaultFile = "images/button1.png",
 		overFile = "images/button2.png",
-		label = "Stats",
+		label = "Story",
 		font = native.DroidSans,
 		fontSize = 120,
 		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onStatRelease
+		onRelease = onStoryRelease
 	} 
-	statBtn.rotation = 90
+	storyBtn.rotation = 90
 
 	-- Credits Button
 	credBtn = widget.newButton{
@@ -132,10 +133,10 @@ function scene:create( event )
 	credBtn.rotation = 90
 
 	-- all display objects must be inserted into group
-	sceneGroup:insert(bg)
+	sceneGroup:insert(bgMain)
 	sceneGroup:insert(title)
 	sceneGroup:insert(playBtn)
-	sceneGroup:insert(statBtn)
+	sceneGroup:insert(storyBtn)
 	sceneGroup:insert(credBtn)
 end
 
@@ -156,7 +157,7 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if event.phase == "will" then
-		resetBgMusic()
+		-- resetBgMusic()
 	elseif phase == "did" then
 		
 	end
