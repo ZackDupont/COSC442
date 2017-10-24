@@ -116,7 +116,7 @@ hint.isVisible = false
 
 local tut1 = native.newTextBox(70, 200, 200, 250)
 tut1.font = native.newFont("Helvetica-Bold", 18 )
-tut1.text = "Welcome. Your goal is to catch the fish with the right letter. Use the hint button if your not sure. \n\nUse the raise and lower buttons to put the fishing line near the right letter."
+tut1.text = "Welcome. Your goal is to catch the fish with the right letter. Hold down the hint button if your not sure. \n\nUse the raise and lower buttons to put the fishing line near the right letter."
 
 local tut2 = native.newTextBox(200, 200, 150, 150)
 tut2.font = native.newFont("Helvetica-Bold", 18 )
