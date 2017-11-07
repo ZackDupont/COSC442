@@ -139,7 +139,7 @@ function scene:create( event )
 	local mainGroup = display.newGroup()
 	local uiGroup = display.newGroup()
 
-	local word = display.newText(uiGroup, "B _ A T", 1300, 2000, native.systemFont, 240)
+	local word = display.newText(uiGroup, "C _ T E", 1300, 2000, native.systemFont, 240)
 	word.rotation = 90
 	word:setFillColor(0,0,0)
 	sceneGroup:insert(word)
@@ -233,53 +233,54 @@ function scene:create( event )
 
 	-- delay end game
 	local function endGame( event )
-		composer.removeScene("level3")
-		composer.gotoScene( "tran3", "fade", 500 )
+		composer.removeScene("level5")
+		composer.gotoScene( "menu", "fade", 500 )
 	end
 
 	-- Check if fish is caught
 
 	local function listener( event )
 		if distance(fishA) < 100 then
-			score = display.newText(uiGroup, "B A A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "C A T E is INCORRECT", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishI) < 100 then
-			score = display.newText(uiGroup, "B I A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "C I T E is NOT what we're looking for!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishU) < 100 then
-			score = display.newText(uiGroup, "B U A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		elseif distance(fishE) < 100 then
-			score = display.newText(uiGroup, "B E A T is NOT quite what we're looking for!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		elseif distance(fishO) < 100 then
-			fishO.alpha = 0
-			local score = display.newText(uiGroup, "That's right! The correct word is B O A T!", 700, 1300, native.systemFont, 120)
+			fishU.alpha = 0
+			local score = display.newText(uiGroup, "That's right! The correct word is C U T E!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			display.remove(word)
-			word = display.newText(uiGroup, " B O A T ", 1300, 2000, native.systemFont, 240)
+			word = display.newText(uiGroup, " C U T E ", 1300, 2000, native.systemFont, 240)
 			word.rotation = 90
 			word:setFillColor(0,0,0)
 			sceneGroup:insert(word)
 			timer.performWithDelay(1500, endGame, 1)
+
+		elseif distance(fishE) < 100 then
+			score = display.newText(uiGroup, "C E T E is INCORRECT!", 700, 1300, native.systemFont, 120)
+			score.rotation = 90
+			score:setFillColor(0,0,0)
+			sceneGroup:insert(score)
+			transition.fadeOut(score, {time = 500})
+
+
+		elseif distance(fishO) < 100 then
+			score = display.newText(uiGroup, "C O T E is INCORRECT!", 700, 1300, native.systemFont, 120)
+			score.rotation = 90
+			score:setFillColor(0,0,0)
+			sceneGroup:insert(score)
+			transition.fadeOut(score, {time = 500})
 
 		end
 	end

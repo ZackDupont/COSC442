@@ -25,47 +25,19 @@ local bgMusic
 -----------------------------------------------------------------------------------------
 
 -- Event Handlers
-local function onHomeRelease(event)
-	composer.gotoScene( "menu", "fade", 500 )
-	return true
-end
-
 -- Tutorial handler
-local function onTutorialRelease(event)
-	composer.gotoScene( "tutorial", "fade", 500 )
-	return true
-end
-
-
--- Level 1 handler
-local function onLevel1Release(event)
-	composer.gotoScene( "level1", "fade", 500 )
-	return true
-end
-
--- Level 2 handler
-local function onLevel2Release(event)
-	composer.gotoScene( "level2", "fade", 500 )
-	return true
-end
-
--- Level 3 handler
-local function onLevel3Release(event)
-	composer.gotoScene( "level3", "fade", 500 )
-	return true
-end
-
--- Level 4 handler
-local function onLevel4Release(event)
-	composer.gotoScene( "level4", "fade", 500 )
-	return true
-end
-
--- Level 5 handler
-local function onLevel5Release(event)
+local function onNextRelease(event)
 	composer.gotoScene( "level5", "fade", 500 )
 	return true
 end
+
+-- Level 1 handler
+local function onHomeRelease(event)
+	composer.gotoScene( "Menu", "fade", 500 )
+	return true
+end
+
+
 
 -- Music Reset Handler
 -- local function resetBgMusic(event)
@@ -96,7 +68,7 @@ function scene:create( event )
 
 	-- Game Title
 	local titleInfo = {
-		text = "Level Select",
+		text = "Well Done!",
 		x = 1250,
 		y = 1280,
 		font = native.DroidSans,
@@ -107,11 +79,26 @@ function scene:create( event )
 	title.rotation = 90
 
 	-- Menu Buttons
-	homeBtn = widget.newButton{
-		left = -150,
+	nextBtn = widget.newButton{
+		left = 450,
 		top = 1150,
 		width = 750,
-		height = 250,
+		height = 300,
+		defaultFile = "images/button1.png",
+		overFile = "images/button2.png",
+		label = "Next Level",
+		font = native.DroidSans,
+		fontSize = 120,
+		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
+		onRelease = onNextRelease
+	}
+	nextBtn.rotation = 90
+
+	homeBtn = widget.newButton{
+		left = 50,
+		top = 1150,
+		width = 750,
+		height = 300,
 		defaultFile = "images/button1.png",
 		overFile = "images/button2.png",
 		label = "Main Menu",
@@ -122,106 +109,11 @@ function scene:create( event )
 	}
 	homeBtn.rotation = 90
 
-	tutorialBtn = widget.newButton{
-		left = 650,
-		top = 350,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Tutorial",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onTutorialRelease
-	}
-	tutorialBtn.rotation = 90
-
-	level1Btn = widget.newButton{
-		left = 650,
-		top = 1150,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Level 1",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onLevel1Release
-	}
-	level1Btn.rotation = 90
-
-	level2Btn = widget.newButton{
-		left = 650,
-		top = 1950,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Level 2",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onLevel2Release
-	}
-	level2Btn.rotation = 90
-
-	level3Btn = widget.newButton{
-		left = 250,
-		top = 350,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Level 3",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onLevel3Release
-	}
-	level3Btn.rotation = 90
-
-	level4Btn = widget.newButton{
-		left = 250,
-		top = 1150,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Level 4",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onLevel4Release
-	}
-	level4Btn.rotation = 90
-
-	level5Btn = widget.newButton{
-		left = 250,
-		top = 1950,
-		width = 600,
-		height = 250,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Level 5",
-		font = native.DroidSans,
-		fontSize = 120,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onLevel5Release
-	}
-	level5Btn.rotation = 90
-
 	-- all display objects must be inserted into group
 	sceneGroup:insert(bgMain)
 	sceneGroup:insert(title)
+	sceneGroup:insert(nextBtn)
 	sceneGroup:insert(homeBtn)
-	sceneGroup:insert(tutorialBtn)
-	sceneGroup:insert(level1Btn)
-	sceneGroup:insert(level2Btn)
-	sceneGroup:insert(level3Btn)
-	sceneGroup:insert(level4Btn)
-	sceneGroup:insert(level5Btn)
 
 end
 
