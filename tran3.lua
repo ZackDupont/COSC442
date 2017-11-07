@@ -27,7 +27,7 @@ local bgMusic
 -- Event Handlers
 -- Tutorial handler
 local function onNextRelease(event)
-	composer.gotoScene( "level5", "fade", 500 )
+	composer.gotoScene( "level4", "fade", 500 )
 	return true
 end
 

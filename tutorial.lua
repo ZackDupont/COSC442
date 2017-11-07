@@ -22,7 +22,7 @@ local physics = require "physics"
 
 -- forward declarations and other locals
 local screenW, screenH, halfW = display.actualContentWidth, display.actualContentHeight, display.contentCenterX
-local background = display.newImageRect( "images/background.png", 600 , 400 )
+local background = display.newImageRect( "images/waterbg.jpg", 600 , 400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
@@ -40,17 +40,17 @@ function scene:create( event )
 	physics.start()
     physics.pause()
 
-	
+
 
 	-- all display objects must be inserted into group
-	
+
 
 	-- create a grey rectangle as the backdrop
 	-- the physical screen will likely be a different shape than our defined content area
 	-- since we are going to position the background from it's top, left corner, draw the
 	-- background at the real top, left corner.
 
-	
+
 
 	-- all display objects must be inserted into group
 	sceneGroup:insert(background)
@@ -297,7 +297,7 @@ local function listener( event )
        tut2 = display.newText("H E L L A is not a word", 235 , 210, native.systemFontBuild, 28)
        score:setFillColor(1, 0, 0)
        transition.fadeOut(tut2, {time = 2000})
-        
+
     elseif distance(fishA) < 80 then
         score.isVisible = true
         sample.isVisible = false

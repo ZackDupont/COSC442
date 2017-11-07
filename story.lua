@@ -171,7 +171,7 @@ function scene:create( event )
 
 	local function endGame( event )
 		composer.removeScene("story")
-		composer.gotoScene( "tutorial", "fade", 500 )
+		composer.gotoScene( "level1", "fade", 500 )
 	end
 
 	-- Terrible Line Switcher

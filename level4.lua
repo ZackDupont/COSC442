@@ -234,7 +234,7 @@ function scene:create( event )
 	-- delay end game
 	local function endGame( event )
 		composer.removeScene("level4")
-		composer.gotoScene( "tran3", "fade", 500 )
+		composer.gotoScene( "tran4", "fade", 500 )
 	end
 
 	-- Check if fish is caught
