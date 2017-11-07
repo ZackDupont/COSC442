@@ -1,12 +1,12 @@
 --
 -- Project: PapaMonkey
--- Description: 
+-- Description:
 --
 -- Version: 1.0
 -- Managed with http://CoronaProjectManager.com
 --
 -- Copyright 2017 . All Rights Reserved.
--- 
+--
 -----------------------------------------------------------------------------------------
 
 local composer = require("composer")
@@ -27,7 +27,7 @@ local bgMusic
 -- Event Handlers
 -- Play button handler
 local function onPlayRelease(event)
-	composer.gotoScene( "level1", "fade", 500 )
+	composer.gotoScene( "levelSelect", "fade", 500 )
 	return true
 end
 
@@ -39,7 +39,7 @@ end
 
 -- Credits button handler
 local function onCreditRelease(event)
-	native.showAlert("Papa Monkey's Extravagent Credits", 
+	native.showAlert("Papa Monkey's Extravagent Credits",
 		"Developers: Zack Dupont, George Grafton, Sam Hunt \nManagement: Zack Dupont, George Grafton, Sam Hunt \nProject Leader(s): Zack Dupont, George Grafton, Sam Hunt \nThrilling Storyline: Zack Dupont, George Grafton, Sam Hunt \nMusic: Sam Hunt \nSpeech Bubbles: Freepik.com")
 	return true
 end
@@ -54,9 +54,9 @@ end
 
 -- Music Player Handler
 local function playBgMusic()
-        audio.play(bgMusic, {channel=1, loops=0,  
+        audio.play(bgMusic, {channel=1, loops=0,
         onComplete=resetBgMusic} )
-end   
+end
 
 -----------------------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ function scene:create( event )
 		fontSize = 120,
 		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
 		onRelease = onPlayRelease
-	} 
+	}
 	playBtn.rotation = 90
 
 	-- Story Button
@@ -113,7 +113,7 @@ function scene:create( event )
 		fontSize = 120,
 		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
 		onRelease = onStoryRelease
-	} 
+	}
 	storyBtn.rotation = 90
 
 	-- Credits Button
@@ -129,7 +129,7 @@ function scene:create( event )
 		fontSize = 120,
 		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
 		onRelease = onCreditRelease
-	} 
+	}
 	credBtn.rotation = 90
 
 	-- all display objects must be inserted into group
@@ -159,7 +159,7 @@ function scene:hide( event )
 	if event.phase == "will" then
 		-- resetBgMusic()
 	elseif phase == "did" then
-		
+
 	end
 end
 

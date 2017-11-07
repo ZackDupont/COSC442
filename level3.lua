@@ -32,6 +32,8 @@ function scene:create( event )
 	end
 
 
+
+
 	-- create a grey rectangle as the backdrop
 	-- the physical screen will likely be a different shape than our defined content area
 	-- since we are going to position the background from it's top, left corner, draw the
@@ -41,10 +43,9 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-
 	-- all display objects must be inserted into group
 	sceneGroup:insert( background )
-	-- Menu Buttons
+
 	homeBtn = widget.newButton{
 		left = 1200,
 		top = 100,
@@ -60,6 +61,7 @@ function scene:create( event )
 	}
 	homeBtn.rotation = 90
 	sceneGroup:insert(homeBtn)
+
 
 	-- FISHES
 	local fishA = display.newImageRect("images/fish.png", 200, 200)
@@ -133,12 +135,11 @@ function scene:create( event )
 	end
 
 
-
 	local backGroup = display.newGroup()
 	local mainGroup = display.newGroup()
 	local uiGroup = display.newGroup()
 
-	local word = display.newText(uiGroup, "F _ S H ", 1300, 2000, native.systemFont, 240)
+	local word = display.newText(uiGroup, "B _ A T", 1300, 2000, native.systemFont, 240)
 	word.rotation = 90
 	word:setFillColor(0,0,0)
 	sceneGroup:insert(word)
@@ -147,7 +148,6 @@ function scene:create( event )
 	local boat = display.newImageRect(mainGroup, "images/boat.png", 400, 800)
 					boat.x = display.contentCenterX + 222
 					boat.y = display.contentCenterY - 100
-					physics.addBody( boat, {radius = 30, isSensor = true })
 					boat.myName = boat
 					sceneGroup:insert(boat)
 
@@ -185,7 +185,6 @@ function scene:create( event )
 					fLine.strokeWidth = 5
 					sceneGroup:insert(fLine)
 					hook.x = hook.x - 40
-
 					return true
 	end
 
@@ -201,89 +200,86 @@ function scene:create( event )
 					return true
 	end
 
+	local upButton = widget.newButton
+	{
+					left = 120,
+					top = 2300,
+					width = 300,
+					height = 150,
+					defaultFile = "images/button1.png",
+					overFile = "images/button2.png",
+					label = "Raise",
+					fontSize = 60,
+					labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
+					onRelease = raiseLineRelease,
+	}
+	upButton.rotation = 90
+	sceneGroup:insert(upButton)
 
-		local upButton = widget.newButton
-		{
-						left = 120,
-						top = 2300,
-						width = 300,
-						height = 150,
-						defaultFile = "images/button1.png",
-						overFile = "images/button2.png",
-						label = "Raise",
-						fontSize = 60,
-						labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-						onRelease = raiseLineRelease,
-		}
-		upButton.rotation = 90
-		sceneGroup:insert(upButton)
-
-		local downButton = widget.newButton{
-						left = -30,
-						top = 2300,
-						width = 300,
-						height = 150,
-						defaultFile = "images/button1.png",
-						overFile = "images/button2.png",
-						label = "Lower",
-						fontSize = 60,
-						labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-						onRelease = lowerLineRelease,
-		}
-		downButton.rotation = 90
-		sceneGroup:insert(downButton)
-
-
+	local downButton = widget.newButton{
+					left = -30,
+					top = 2300,
+					width = 300,
+					height = 150,
+					defaultFile = "images/button1.png",
+					overFile = "images/button2.png",
+					label = "Lower",
+					fontSize = 60,
+					labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
+					onRelease = lowerLineRelease,
+	}
+	downButton.rotation = 90
+	sceneGroup:insert(downButton)
 
 	-- delay end game
 	local function endGame( event )
-		composer.removeScene("level1")
-		composer.gotoScene( "tran1", "fade", 500 )
+		composer.removeScene("level3")
+		composer.gotoScene( "menu", "fade", 500 )
 	end
 
 	-- Check if fish is caught
 
 	local function listener( event )
 		if distance(fishA) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F A S H is not a word!", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "B A A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishI) < 100 then
-			fishI.alpha = 0
-			score = display.newText(uiGroup, "That's right! The correct word is F I S H! ", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "B I A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
-			display.remove(word)
-			word = display.newText(uiGroup, "F I S H ", 1300, 2000, native.systemFont, 240)
-			word.rotation = 90
-			word:setFillColor(0,0,0)
-			sceneGroup:insert(word)
-			timer.performWithDelay(1500, endGame, 1)
+			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishU) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F U S H is not a word!", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "B U A T is NOT the correct word!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishE) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F E S H is not a word!", 700, 1300, native.systemFont, 120)
+			score = display.newText(uiGroup, "B E A T is NOT quite what we're looking for!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
 			transition.fadeOut(score, {time = 500})
 
 		elseif distance(fishO) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F O S H is not a word!", 700, 1300, native.systemFont, 120)
+			fishO.alpha = 0
+			local score = display.newText(uiGroup, "That's right! The correct word is B O A T!", 700, 1300, native.systemFont, 120)
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
+			display.remove(word)
+			word = display.newText(uiGroup, " B O A T ", 1300, 2000, native.systemFont, 240)
+			word.rotation = 90
+			word:setFillColor(0,0,0)
+			sceneGroup:insert(word)
+			timer.performWithDelay(1500, endGame, 1)
 
 		end
 	end
@@ -304,7 +300,6 @@ function scene:show( event )
 		--
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
-
 
 	end
 end

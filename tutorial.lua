@@ -6,7 +6,9 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-local widget = require("widget")
+
+-- include Corona's "physics" library
+local physics = require "physics"
 
 --------------------------------------------
 
@@ -22,14 +24,13 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	-- We need physics started to add bodies, but we don't want the simulaton
+	-- running until the scene is on the screen.
+	physics.start()
+	physics.pause()
 
 	local d
 
-	-- Event Handlers
-	local function onHomeRelease(event)
-		composer.gotoScene( "menu", "fade", 500 )
-		return true
-	end
 
 
 	-- create a grey rectangle as the backdrop
@@ -41,26 +42,8 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-
 	-- all display objects must be inserted into group
 	sceneGroup:insert( background )
-	-- Menu Buttons
-	homeBtn = widget.newButton{
-		left = 1200,
-		top = 100,
-		width = 250,
-		height = 150,
-		defaultFile = "images/button1.png",
-		overFile = "images/button2.png",
-		label = "Menu",
-		font = native.DroidSans,
-		fontSize = 60,
-		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-		onRelease = onHomeRelease
-	}
-	homeBtn.rotation = 90
-	sceneGroup:insert(homeBtn)
-
 	-- FISHES
 	local fishA = display.newImageRect("images/fish.png", 200, 200)
 	fishA.x = 700
@@ -132,16 +115,21 @@ function scene:create( event )
 		movefishO()
 	end
 
+	local widget = require("widget")
+	local physics = require("physics")
+
+	physics.start()
+	physics.setGravity(0, 0)
 
 
 	local backGroup = display.newGroup()
 	local mainGroup = display.newGroup()
 	local uiGroup = display.newGroup()
 
-	local word = display.newText(uiGroup, "F _ S H ", 1300, 2000, native.systemFont, 240)
-	word.rotation = 90
-	word:setFillColor(0,0,0)
-	sceneGroup:insert(word)
+	local score = display.newText(uiGroup, "F _ S H ", 1300, 2000, native.systemFont, 240)
+	score.rotation = 90
+	score:setFillColor(0,0,0)
+	sceneGroup:insert(score)
 
 
 	local boat = display.newImageRect(mainGroup, "images/boat.png", 400, 800)
@@ -201,39 +189,32 @@ function scene:create( event )
 					return true
 	end
 
+	local upButton = widget.newButton
+	{
+					left = 120,
+					top = 2300,
+					width = 300,
+					height = 150,
+					defaultFile = "images/upButton.png",
+					overFile = "images/upButton.png",
+					label = "Raise Line",
+					onRelease = raiseLineRelease,
+	}
+	upButton.rotation = 90
+	sceneGroup:insert(upButton)
 
-		local upButton = widget.newButton
-		{
-						left = 120,
-						top = 2300,
-						width = 300,
-						height = 150,
-						defaultFile = "images/button1.png",
-						overFile = "images/button2.png",
-						label = "Raise",
-						fontSize = 60,
-						labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-						onRelease = raiseLineRelease,
-		}
-		upButton.rotation = 90
-		sceneGroup:insert(upButton)
-
-		local downButton = widget.newButton{
-						left = -30,
-						top = 2300,
-						width = 300,
-						height = 150,
-						defaultFile = "images/button1.png",
-						overFile = "images/button2.png",
-						label = "Lower",
-						fontSize = 60,
-						labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
-						onRelease = lowerLineRelease,
-		}
-		downButton.rotation = 90
-		sceneGroup:insert(downButton)
-
-
+	local downButton = widget.newButton{
+					left = 0,
+					top = 2300,
+					width = 300,
+					height = 150,
+					defaultFile = "images/downButton.png",
+					overFile = "images/downButton.png",
+					label = "Lower Line",
+					onRelease = lowerLineRelease,
+	}
+	downButton.rotation = 90
+	sceneGroup:insert(downButton)
 
 	-- delay end game
 	local function endGame( event )
@@ -257,11 +238,10 @@ function scene:create( event )
 			score.rotation = 90
 			score:setFillColor(0,0,0)
 			sceneGroup:insert(score)
-			display.remove(word)
-			word = display.newText(uiGroup, "F I S H ", 1300, 2000, native.systemFont, 240)
-			word.rotation = 90
-			word:setFillColor(0,0,0)
-			sceneGroup:insert(word)
+			score = display.newText(uiGroup, "F I S H ", 1300, 2000, native.systemFont, 240)
+			score.rotation = 90
+			score:setFillColor(0,0,0)
+			sceneGroup:insert(score)
 			timer.performWithDelay(1500, endGame, 1)
 
 		elseif distance(fishU) < 100 then
@@ -304,7 +284,7 @@ function scene:show( event )
 		--
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
-
+		physics.start()
 
 	end
 end
@@ -319,7 +299,7 @@ function scene:hide( event )
 		--
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
-
+		physics.stop()
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 	end
@@ -335,6 +315,8 @@ function scene:destroy( event )
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
 	local sceneGroup = self.view
 
+	package.loaded[physics] = nil
+	physics = nil
 end
 
 ---------------------------------------------------------------------------------

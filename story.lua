@@ -1,6 +1,6 @@
 
 local composer = require( "composer" )
-
+local widget = require("widget")
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
@@ -20,6 +20,12 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+
+	-- Event Handlers
+	local function onHomeRelease(event)
+		composer.gotoScene( "menu", "fade", 500 )
+		return true
+	end
 
 	-- Background Image
 	local bgStory = display.newImageRect("images/bgStory.png", 800, 1400 )
@@ -70,6 +76,8 @@ function scene:create( event )
 	babyB.y = 1700
 	babyB.isVisible = false
 
+
+
 	-- -- AdoptedHippo
 	-- local adoptedH= display.newImageRect("images/adoptedHippo.png", 854, 720 )
 	-- adoptedH.rotation = 90
@@ -80,12 +88,12 @@ function scene:create( event )
 	-- -- StrandedSLoth
 	-- local strandedS = display.newImageRect("images/strandedSLoth.png", 420, 440 )
 	-- strandedS.rotation = 90
-	-- strandedS.x = 450 
+	-- strandedS.x = 450
 	-- strandedS.y = 3000
-	
+
 	-- Storyline
 	local line1 = "Papa Monkey: My, what a beautiful day it is here in the land of Zo"
-	local line2 = ".....: Papa Moneky! Where are you dear?"
+	local line2 = ".....: Papa Monkey! Where are you dear?"
 	local line3 = "Papa Monkey: I am out by the pond enjoying the sunshine, my sweet wife Mama Maybelle"
 	local line4 = "Mama Maybelle: Oh there you are, who would of thought that you weren't in our tiny home with me!"
 	local line5 = "Mama Maybelle: Has our daily order of rations been dropped off yet? Baby Betsy is starting to get hungry and we are all out of food!"
@@ -111,12 +119,12 @@ function scene:create( event )
 
 	-- Text Area
 	local textArea = {
-		text = line1,     
+		text = line1,
         x = 0,
         y = 1280,
         width = 2000,
         height = 300,
-		font = native.DroidSans,   
+		font = native.DroidSans,
 		fontSize = 60,
 		align = "center"  -- Alignment parameter
 	}
@@ -137,7 +145,7 @@ function scene:create( event )
 	 	return true
 	end
 
-	local function mama(event) -- To be called at line 4 
+	local function mama(event) -- To be called at line 4
 		mamaM.isVisible = true
 	end
 
@@ -161,52 +169,60 @@ function scene:create( event )
 		lavishL.isVisible = false
 	end
 
+	local function endGame( event )
+		composer.removeScene("story")
+		composer.gotoScene( "tutorial", "fade", 500 )
+	end
+
 	-- Terrible Line Switcher
 	local function lineListener(event)
-		if text.text == line1 then 
-			text.text = line2 
+		if text.text == line1 then
+			text.text = line2
 		elseif text.text == line2 then
 			text.text = line3
 		elseif text.text == line3 then
-			text.text = line4 
+			text.text = line4
 		elseif text.text == line4 then
-			text.text = line5 
+			text.text = line5
 		elseif text.text == line5 then
-			text.text = line6 
+			text.text = line6
 		elseif text.text == line6 then
-			text.text = line7 
+			text.text = line7
 		elseif text.text == line7 then
-			text.text = line8 
+			text.text = line8
 		elseif text.text == line8 then
-			text.text = line9 
+			text.text = line9
 		elseif text.text == line9 then
-			text.text = line10 
+			text.text = line10
 		elseif text.text == line10 then
-			text.text = line11 
+			text.text = line11
 		elseif text.text == line11 then
-			text.text = line12 
+			text.text = line12
 		elseif text.text == line12 then
-			text.text = line13 
+			text.text = line13
 		elseif text.text == line13 then
-			text.text = line14 
+			text.text = line14
 		elseif text.text == line14 then
-			text.text = line15 
+			text.text = line15
 		elseif text.text == line15 then
-			text.text = line16 
+			text.text = line16
 		elseif text.text == line16 then
-			text.text = line17 
+			text.text = line17
 		elseif text.text == line17 then
-			text.text = line18 
+			text.text = line18
 		elseif text.text == line18 then
-			text.text = line19 
+			text.text = line19
 		elseif text.text == line19 then
-			text.text = line20 
+			text.text = line20
 		elseif text.text == line20 then
-			text.text = line21 
+			text.text = line21
 		elseif text.text == line21 then
-			text.text = line22 
+			text.text = line22
 		elseif text.text == line22 then
 			text.text = line23
+		elseif text.text == line23 then
+			text.text = line24
+			timer.performWithDelay(2000, endGame, 1)
 		end
 
 	end
@@ -231,7 +247,27 @@ function scene:create( event )
 	sceneGroup:insert(sonU)
 	sceneGroup:insert(babyB)
 	sceneGroup:insert(lavishL)
+	sceneGroup:insert(text)
 	-- text?
+
+
+	homeBtn = widget.newButton{
+		left = 1200,
+		top = 100,
+		width = 250,
+		height = 150,
+		defaultFile = "images/button1.png",
+		overFile = "images/button2.png",
+		label = "Menu",
+		font = native.DroidSans,
+		fontSize = 60,
+		labelColor = {default = {0.7,0.01,1}, over = {0,0,0}},
+		onRelease = onHomeRelease
+	}
+	homeBtn.rotation = 90
+	sceneGroup:insert(homeBtn)
+
+
 end
 
 
