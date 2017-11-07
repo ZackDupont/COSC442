@@ -1,11 +1,19 @@
 -----------------------------------------------------------------------------------------
 --
--- level1.lua
+-- main.lua
+--
+-----------------------------------------------------------------------------------------
+
+-- Your code here
+-----------------------------------------------------------------------------------------
+--
+-- main.lua
 --
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
 local scene = composer.newScene()
+local widget = require("widget")
 
 -- include Corona's "physics" library
 local physics = require "physics"
@@ -14,6 +22,9 @@ local physics = require "physics"
 
 -- forward declarations and other locals
 local screenW, screenH, halfW = display.actualContentWidth, display.actualContentHeight, display.contentCenterX
+local background = display.newImageRect( "images/background.png", 600 , 400 )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
 
 function scene:create( event )
 
@@ -27,249 +38,22 @@ function scene:create( event )
 	-- We need physics started to add bodies, but we don't want the simulaton
 	-- running until the scene is on the screen.
 	physics.start()
-	physics.pause()
+    physics.pause()
 
-	local d
+	
 
-
+	-- all display objects must be inserted into group
+	
 
 	-- create a grey rectangle as the backdrop
 	-- the physical screen will likely be a different shape than our defined content area
 	-- since we are going to position the background from it's top, left corner, draw the
 	-- background at the real top, left corner.
 
-	local background = display.newImageRect( "images/waterbg.jpg", display.actualContentHeight, display.actualContentWidth )
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
+	
 
 	-- all display objects must be inserted into group
-	sceneGroup:insert( background )
-	-- FISHES
-	local fishA = display.newImageRect("images/fish.png", 200, 200)
-	fishA.x = 700
-	fishA.y = 3000
-
-	local fishI = display.newImageRect("images/BPFish.png", 200, 200)
-	fishI.x = 500
-	fishI.y = -500
-
-	local fishU = display.newImageRect("images/GFish.png", 200, 200)
-	fishU.x = 600
-	fishU.y = 3000
-
-	local fishE = display.newImageRect("images/RFish.png", 200, 200)
-	fishE.x = 300
-	fishE.y = -1000
-
-	local fishO = display.newImageRect("images/YFish.png", 200, 200)
-	fishO.x = 420
-	fishO.y = 3000
-
-	sceneGroup:insert(fishA)
-	sceneGroup:insert(fishI)
-	sceneGroup:insert(fishU)
-	sceneGroup:insert(fishE)
-	sceneGroup:insert(fishO)
-
-
-	-- MOVING FISHES
-
-	local function moveFishA()
-			transition.to(fishA, {x = 700, y = -100, time=9000,onComplete=function() fishA.x = 700 fishA.y = 3000
-				transition.to(fishA, {x = 700, y = -100, time=9000, onComplete=moveFishA()})
-			end})
-	end
-
-	local function moveFishI()
-		transition.to(fishI, {x = 500, y = 2700, time=10000,onComplete=function() fishI.x = 500 fishI.y = -1000
-			transition.to(fishI, {x = 500, y = 2700, time=10000, onComplete=moveFishI()})
-		end})
-	end
-
-	local function movefishU()
-		transition.to(fishU, {x = 600, y = -1000, time=18000,onComplete=function() fishU.x = 600 fishU.y = 3000
-			transition.to(fishU, {x = 600, y = -1000, time=18000, onComplete=movefishU()})
-		end})
-	end
-
-	local function movefishE()
-		transition.to(fishE, {x = 300, y = 3000, time=15000,onComplete=function() fishE.x = 300 fishE.y = -1000
-			transition.to(fishE, {x = 300, y = 3000, time=15000, onComplete=movefishE()})
-		end})
-	end
-
-	local function movefishO()
-		transition.to(fishO, {x = 420, y = -1000, time=14000,onComplete=function() fishO.x = 420 fishO.y = 3000
-			transition.to(fishO, {x = 420, y = -1000 , time=14000, onComplete=movefishO()})
-		end})
-	end
-
-	-- CALL MOVEFISH
-
-	for i=1,10,1
-	do
-		moveFishA()
-		moveFishI()
-		movefishU()
-		movefishE()
-		movefishO()
-	end
-
-	local widget = require("widget")
-	local physics = require("physics")
-
-	physics.start()
-	physics.setGravity(0, 0)
-
-
-	local backGroup = display.newGroup()
-	local mainGroup = display.newGroup()
-	local uiGroup = display.newGroup()
-
-	local score = display.newText(uiGroup, "F _ S H ", 1300, 2000, native.systemFont, 240)
-	score.rotation = 90
-	score:setFillColor(0,0,0)
-	sceneGroup:insert(score)
-
-
-	local boat = display.newImageRect(mainGroup, "images/boat.png", 400, 800)
-					boat.x = display.contentCenterX + 222
-					boat.y = display.contentCenterY - 100
-					physics.addBody( boat, {radius = 30, isSensor = true })
-					boat.myName = boat
-					sceneGroup:insert(boat)
-
-	local monkey = display.newImageRect(mainGroup, "images/monkey.png", 600, 600)
-					monkey.x = boat.x + 169
-					monkey.y = boat.y + 100
-					sceneGroup:insert(monkey)
-
-	local frod = display.newImageRect( mainGroup, "images/frod.png", 300, 300)
-					frod.x = monkey.x + 60
-					frod.y = monkey.y + 130
-					sceneGroup:insert(frod)
-
-		local hook = display.newImageRect( mainGroup, "images/hook.png", 50, 25)
-					hook.x = frod.x + 115
-					hook.y = frod.y + 130
-					sceneGroup:insert(hook)
-
-		local fLine = display.newLine(mainGroup, frod.x + 150,frod.y + 140 , hook.x + 10,frod.y + 140)
-					fLine:setStrokeColor(0)
-					fLine.strokeWidth = 5
-					sceneGroup:insert(fLine)
-
-	-- Distance
-	function distance (fish)
-		d = math.sqrt(math.pow(hook.x - fish.x, 2) + math.pow(hook.y - fish.y, 2))
-		return d
-	end
-
-
-	local function lowerLineRelease (event)
-					display.remove(fLine)
-					fLine = display.newLine(mainGroup, frod.x + 150,frod.y + 140 , hook.x - 15,frod.y + 140)
-					fLine:setStrokeColor(0)
-					fLine.strokeWidth = 5
-					sceneGroup:insert(fLine)
-					hook.x = hook.x - 40
-
-					return true
-	end
-
-	local function raiseLineRelease (event)
-					display.remove(fLine)
-					fLine = display.newLine(mainGroup, frod.x + 150,frod.y + 140 , hook.x + 60,frod.y + 140)
-					fLine:setStrokeColor(0)
-					fLine.strokeWidth = 5
-					sceneGroup:insert(fLine)
-					if hook.x < frod.x + 115 then
-						hook.x = hook.x + 40
-					end
-					return true
-	end
-
-	local upButton = widget.newButton
-	{
-					left = 120,
-					top = 2300,
-					width = 300,
-					height = 150,
-					defaultFile = "images/upButton.png",
-					overFile = "images/upButton.png",
-					label = "Raise Line",
-					onRelease = raiseLineRelease,
-	}
-	upButton.rotation = 90
-	sceneGroup:insert(upButton)
-
-	local downButton = widget.newButton{
-					left = 0,
-					top = 2300,
-					width = 300,
-					height = 150,
-					defaultFile = "images/downButton.png",
-					overFile = "images/downButton.png",
-					label = "Lower Line",
-					onRelease = lowerLineRelease,
-	}
-	downButton.rotation = 90
-	sceneGroup:insert(downButton)
-
-	-- delay end game
-	local function endGame( event )
-		composer.removeScene("level1")
-		composer.gotoScene( "tran1", "fade", 500 )
-	end
-
-	-- Check if fish is caught
-
-	local function listener( event )
-		if distance(fishA) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F A S H is not a word!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		elseif distance(fishI) < 100 then
-			fishI.alpha = 0
-			score = display.newText(uiGroup, "That's right! The correct word is F I S H! ", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			score = display.newText(uiGroup, "F I S H ", 1300, 2000, native.systemFont, 240)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			timer.performWithDelay(1500, endGame, 1)
-
-		elseif distance(fishU) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F U S H is not a word!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		elseif distance(fishE) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F E S H is not a word!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		elseif distance(fishO) < 100 then
-			score = display.newText(uiGroup, "That's INCORRECT! F O S H is not a word!", 700, 1300, native.systemFont, 120)
-			score.rotation = 90
-			score:setFillColor(0,0,0)
-			sceneGroup:insert(score)
-			transition.fadeOut(score, {time = 500})
-
-		end
-	end
-
-	timer.performWithDelay(100, listener, 0)
-
+	sceneGroup:insert(background)
 end
 
 
@@ -285,7 +69,6 @@ function scene:show( event )
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
 		physics.start()
-
 	end
 end
 
@@ -319,6 +102,216 @@ function scene:destroy( event )
 	physics = nil
 end
 
+-- Game Layout
+local backgroup = display.newGroup()
+local mainGroup = display.newGroup()
+local uiGroup = display.newGroup()
+
+
+--Game Objects
+-----------------------------------------------------
+-----------------------------------------------------
+--game text
+local sample = display.newText(uiGroup, "H E L L _", 60, 40, native.systemFontBuild, 48)
+sample:setFillColor("black")
+
+local score = display.newText(uiGroup, "That's right! The Correct word is H E L L O", 235 , 210, native.systemFontBuild, 28)
+score:setFillColor(1, 0, 0)
+score.isVisible = false
+
+local hint = display.newText(uiGroup, "a word like hi", 235, 210, native.systemFontBuild, 32)
+hint:setFillColor(0, 1, 1)
+hint.isVisible = false
+
+local tut1 = native.newTextBox(70, 200, 200, 250)
+tut1.font = native.newFont("Helvetica-Bold", 18 )
+tut1.text = "Welcome. Your goal is to catch the fish with the right letter. Hold down the hint button if your not sure. \n\nUse the raise and lower buttons to put the fishing line near the right letter."
+
+local tut2 = display.newText(uiGroup, "H E L L A is not a word!", 235 , 210, native.systemFontBuild, 28)
+score:setFillColor(1, 0, 0)
+tut2.isVisible = false
+
+
+local help = display.newText(uiGroup, "Wrong Fish! Use a hint if you need!", 140, 300, native.systemFontBuild, 20)
+help:setFillColor(1, 1, 0)
+help.isVisible = false
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+--
+
+
+local boat = display.newImageRect( mainGroup, "images/boat.png", 200, 100)
+boat.x = display.contentCenterX
+boat.y = 100
+
+local monkey = display.newImageRect( mainGroup, "images/monkey.png", 140, 100)
+monkey.x = display.contentCenterX + 50
+monkey.y = 50
+
+local frod = display.newImageRect( mainGroup, "images/frod.png", 50, 50)
+frod.x = display.contentCenterX + 75
+frod.y = 40
+--------------------------------------------------------------
+--------------------------------------------------------------
+local fishA = display.newImageRect("images/YFish.png", 60, 60)
+fishA.x = 1000
+fishA.y = 400
+
+local fishB = display.newImageRect("images/fish.png", 60, 60)
+fishB.x = 1000
+fishB.y = 300
+isVisible = true
+
+local line = display.newRect(mainGroup, display.contentCenterX + 98, 40, 2, 20)
+    line:setFillColor(black)
+
+local sloth = display.newImageRect("images/sloth.png", 200, 200)
+sloth.x = display.contentCenterX - 180
+sloth.y = display.contentCenterY + 50
+sloth.isVisible = false
+---------------------------------------------------------
+---------------------------------------------------------
+
+
+--buttons for raising/lowering fishing line.
+-------------------------------------------------------
+-------------------------------------------------------
+local function raiseLine( event )
+    line.y = line.y - 30
+    line.height = line.height - 60
+    tut2.isVisible = false
+    return true
+end
+
+local function lowerLine (event)
+    line.y = line.y + 30
+    line.height = line.height + 60
+    tut1.isVisible = false
+    tut2.isVisible = false
+    return true
+end
+
+local function giveHint(event)
+   hint.isVisible = true
+   sloth.isVisible = true
+   tut1.isVisible = false
+end
+
+local function hideHint(event)
+    hint.isVisible = false
+    sloth.isVisible = false
+
+
+end
+
+
+--functions for buttons
+--------------------------------------------------------
+--------------------------------------------------------
+local upButton = widget.newButton
+{
+        left = 400,
+        top = 20,
+        width = 100,
+        height = 50,
+        defaultFile = "images/upbutton.png",
+        overFile = "images/upbutton.png",
+        label = "Raise Line",
+        onRelease = raiseLine,
+}
+
+local downButton = widget.newButton
+{
+        left = 400,
+        top = 80,
+        width = 100,
+        height = 50,
+        defaultFile = "images/downbutton.png",
+        overFile = "images/downbutton.png",
+        label = "Lower Line",
+        onRelease = lowerLine,
+}
+
+local hintButton = widget.newButton
+{
+    left = 400,
+    top = 140,
+    width = 100,
+    height = 50,
+    defaultFile = "images/hint.png",
+    overFile = "images/hint.png",
+    label = "Show Hint",
+    onPress = giveHint,
+    onRelease = hideHint,
+
+}
+
+
+
+
+--function to move fish
+----------------------------------------------------------
+--------------------------------------------------------
+local function moveFishA()
+  transition.to(fishA, {x = -100, y = 200, time=9000,onComplete=function() fishA.x = 1000 fishA.y = 200
+    transition.to(fishA, {x = -100, y = 200, time=9000, onComplete=moveFishA()})
+  end})
+end
+
+for i=1, 10, 1
+    do
+        moveFishA()
+    end
+
+local function moveFishB()
+     transition.to(fishB, {x = -200, y = 140, time=12000,onComplete=function() fishB.x = 1000 fishB.y = 140
+    transition.to(fishB, {x = -200, y = 140, time=12000, onComplete=moveFishB()})
+  end})
+end
+
+for i = 1, 10 ,1
+    do
+        moveFishB()
+    end
+
+
+
+
+--physics detection
+------------------------------------------------------------
+------------------------------------------------------------
+
+
+--function for physics interaction
+-------------------------------------------------------
+-------------------------------------------------------
+function distance (fish)
+	d = math.sqrt(math.pow(line.x - fish.x, 2) + math.pow(line.y - fish.y, 2))
+	return d
+end
+
+local function listener( event )
+	if distance(fishB) < 80 then
+       tut2 = display.newText("H E L L A is not a word", 235 , 210, native.systemFontBuild, 28)
+       score:setFillColor(1, 0, 0)
+       transition.fadeOut(tut2, {time = 2000})
+        
+    elseif distance(fishA) < 80 then
+        score.isVisible = true
+        sample.isVisible = false
+        fishA.isVisible = false
+        fishB.isVisible = false
+        tut2.isVisible = false
+
+	end
+end
+
+timer.performWithDelay(100, listener, 0)
+
+
+
 ---------------------------------------------------------------------------------
 
 -- Listener setup
@@ -328,5 +321,5 @@ scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 
 -----------------------------------------------------------------------------------------
-
+Runtime:addEventListener("touch", hintButton)
 return scene
